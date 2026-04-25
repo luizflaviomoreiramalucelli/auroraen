@@ -1,51 +1,36 @@
-name: Build Flutter Desktop Apps
+name: Package Web to Desktop
 
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:   # allow manual trigger
+  workflow_dispatch:
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  electron-package:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest, macos-latest ]
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - uses: actions/setup-node@v4
         with:
-          flutter-version: '3.24.0'  # or latest stable
+          node-version: 20
 
-      - name: Enable Windows desktop
-        run: flutter config --enable-windows-desktop
+      - name: Install Electron dependencies
+        run: npm ci
+        working-directory: electron
 
-      - name: Build Windows executable
-        run: flutter build windows --release
+      - name: Package with electron-builder
+        run: npm run dist
+        working-directory: electron
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
-      - name: Upload Windows artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: windows-exe
-          path: build/windows/x64/runner/Release/
-
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.0'
-
-      - name: Enable macOS desktop
-        run: flutter config --enable-macos-desktop
-
-      - name: Build macOS app
-        run: flutter build macos --release
-
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-app
-          path: build/macos/Build/Products/Release/
+          name: desktop-app-${{ matrix.os }}
+          path: electron/dist/
