@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 extension StringExtension on String {
   String capitalize() {
@@ -188,3 +188,6 @@ Future<AlertPopData?> showAlert({
     },
   );
 }
+
+bool get supportsKeyboardShortcuts =>
+    kIsWeb || Platform.isWindows || Platform.isMacOS;

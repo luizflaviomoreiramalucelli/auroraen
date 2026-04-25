@@ -24,7 +24,7 @@ class _VocabPageState extends State<VocabPage> {
   String currWord = '';
   int attempts = 0;
   double score = 0;
-  double maxWidth = kIsWeb ? 700 : double.infinity;
+  double maxWidth = supportsKeyboardShortcuts ? 700 : double.infinity;
   bool dialogOpen = false;
   bool userFailed = false;
   bool quizDialogOpen = false;
@@ -34,14 +34,14 @@ class _VocabPageState extends State<VocabPage> {
     super.initState();
     _items = widget.wordList.toList()..shuffle();
     _answers = widget.wordList.toList()..shuffle();
-    if (kIsWeb) {
+    if (supportsKeyboardShortcuts) {
       HardwareKeyboard.instance.addHandler(_handleKeyEvent);
     }
   }
 
   @override
   void dispose() {
-    if (kIsWeb) {
+    if (supportsKeyboardShortcuts) {
       HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
     }
     super.dispose();
