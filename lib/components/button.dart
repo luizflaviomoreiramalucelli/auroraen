@@ -1,19 +1,48 @@
 import 'package:flutter/material.dart';
 
-class Button extends StatelessWidget {
+import '../constants.dart';
+
+class Button extends StatefulWidget {
   final String text;
-  final GestureTapUpCallback? onTap;
+  final VoidCallback onTap;
 
   const Button({super.key, required this.text, required this.onTap});
 
   @override
+  State<Button> createState() => _ButtonState();
+}
+
+class _ButtonState extends State<Button> {
+  bool isSelected = false;
+
+  @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    final isDark = brightness == Brightness.dark;
+
     return GestureDetector(
-      onTapUp: onTap,
+      onTapUp: (_) {
+        setState(() {
+          isSelected = false;
+        });
+        widget.onTap();
+      },
+      onTapDown: (_) {
+        setState(() {
+          isSelected = true;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          isSelected = false;
+        });
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: isDark
+              ? (isSelected ? kActiveDarkAccentColor : kDarkAccentColor)
+              : (isSelected ? kActiveAccentColor : kAccentColor),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -23,7 +52,10 @@ class Button extends StatelessWidget {
             ),
           ],
         ),
-        child: Text(text, style: TextStyle(fontSize: 26)),
+        child: Text(
+          widget.text,
+          style: TextStyle(fontSize: 26, color: Colors.white),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:aurora_en/constants.dart';
 import 'package:aurora_en/screen/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -26,8 +27,29 @@ class MyApp extends StatelessWidget {
       //   Locale('en', ''),
       //   Locale('pt', ''),
       // ],
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light().copyWith(
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: kAccentColor,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+
+      darkTheme: ThemeData.dark().copyWith(
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: kDarkAccentColor,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
       themeMode: ThemeMode.system,
       home: const HomePage(),
     );
