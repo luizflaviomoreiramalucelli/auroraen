@@ -1,0 +1,45 @@
+{
+  "main": "electron/main.js",
+  "name": "my-flutter-electron-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "start": "electron .",
+    "dev": "electronmon ."
+  },
+  "build": {
+    "appId": "com.jogoempatia.auroraen",
+    "productName": "Aurora English",
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/web",
+        "to": "web"
+      }
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electronmon": "^2.0.4"
+  },
+  "dependencies": {
+    "express": "latest"
+  }
+}

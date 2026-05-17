@@ -18,16 +18,14 @@ jobs:
 
       - name: Install Electron dependencies
         run: npm install
-        working-directory: electron
 
       - name: Package with electron-builder
-        run: npm run dist
-        working-directory: electron
+        run: npm run dist:win
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: desktop-app-${{ matrix.os }}
-          path: electron/dist/
+          name: desktop-app
+          path: dist/
