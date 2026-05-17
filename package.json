@@ -9,6 +9,7 @@
     "dev": "electronmon ."
   },
   "build": {
+    "publish": "never",
     "appId": "com.jogoempatia.auroraen",
     "productName": "Aurora English",
     "files": [
